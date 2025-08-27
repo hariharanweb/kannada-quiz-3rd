@@ -181,11 +181,7 @@
         "ಲ": {
             "word": "ಲೋಟ",
             "meaning": "cup"
-        },
-        "ಳ": {
-            "word": "ಳತೆ",
-            "meaning": "creeper"
-        },
+        },        
         "ವ": {
             "word": "ವನು",
             "meaning": "he"
@@ -206,9 +202,9 @@
             "word": "ಹಣ್ಣು",
             "meaning": "fruit"
         },
-        "ೞ": {
-            "word": "ೞಾಲ",
-            "meaning": "net (archaic letter)"
+        "ಳ": {
+            "word": "ಳತೆ",
+            "meaning": "creeper"
         }
     },
     "vowel_signs": [
