@@ -50,6 +50,8 @@ export const QuizSettings: React.FC<QuizSettingsProps> = ({
             <li>• Letter sequence (before/after)</li>
             <li>• Kannada to English translation</li>
             <li>• English to Kannada translation</li>
+            <li>• Kannada numbers to English (1-50)</li>
+            <li>• English numbers to Kannada (1-50)</li>
           </ul>
         </div>
 

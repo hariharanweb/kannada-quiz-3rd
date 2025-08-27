@@ -4,11 +4,26 @@ export class QuizGenerator {
   private data: QuizData;
   private vowelOrder: string[];
   private consonantOrder: string[];
+  private kannadaNumbers: string[];
+  private englishNumbers: string[];
 
   constructor(data: QuizData) {
     this.data = data;
     this.vowelOrder = Object.keys(data.vowels);
     this.consonantOrder = Object.keys(data.consonants);
+    this.kannadaNumbers = data.numbers;
+    this.englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  }
+
+  private convertToKannadaNumber(num: number): string {
+    return num.toString().split('').map(digit => this.kannadaNumbers[parseInt(digit)]).join('');
+  }
+
+  private convertToEnglishNumber(kannadaNum: string): string {
+    return kannadaNum.split('').map(char => {
+      const index = this.kannadaNumbers.indexOf(char);
+      return index !== -1 ? index.toString() : char;
+    }).join('');
   }
 
   private shuffleArray<T>(array: T[]): T[] {
@@ -106,9 +121,75 @@ export class QuizGenerator {
     };
   }
 
+  private generateKannadaNumberToEnglishQuestion(): Question | null {
+    // Generate a random number between 1 and 50
+    const randomNumber = Math.floor(Math.random() * 50) + 1;
+    const kannadaNumber = this.convertToKannadaNumber(randomNumber);
+    const correctAnswer = randomNumber.toString();
+
+    // Generate wrong options
+    const wrongOptions: string[] = [];
+    const usedNumbers = new Set([randomNumber]);
+
+    while (wrongOptions.length < 3) {
+      const wrongNum = Math.floor(Math.random() * 50) + 1;
+      if (!usedNumbers.has(wrongNum)) {
+        wrongOptions.push(wrongNum.toString());
+        usedNumbers.add(wrongNum);
+      }
+    }
+
+    const options = this.shuffleArray([correctAnswer, ...wrongOptions]);
+
+    return {
+      id: Date.now() + Math.random(),
+      type: 'kannada-number-to-english',
+      question: `What is the English number for "${kannadaNumber}"?`,
+      options,
+      correctAnswer,
+      explanation: `"${kannadaNumber}" is "${correctAnswer}" in English.`
+    };
+  }
+
+  private generateEnglishNumberToKannadaQuestion(): Question | null {
+    // Generate a random number between 1 and 50
+    const randomNumber = Math.floor(Math.random() * 50) + 1;
+    const correctAnswer = this.convertToKannadaNumber(randomNumber);
+    const englishNumber = randomNumber.toString();
+
+    // Generate wrong options
+    const wrongOptions: string[] = [];
+    const usedNumbers = new Set([randomNumber]);
+
+    while (wrongOptions.length < 3) {
+      const wrongNum = Math.floor(Math.random() * 50) + 1;
+      if (!usedNumbers.has(wrongNum)) {
+        wrongOptions.push(this.convertToKannadaNumber(wrongNum));
+        usedNumbers.add(wrongNum);
+      }
+    }
+
+    const options = this.shuffleArray([correctAnswer, ...wrongOptions]);
+
+    return {
+      id: Date.now() + Math.random(),
+      type: 'english-number-to-kannada',
+      question: `What is the Kannada number for "${englishNumber}"?`,
+      options,
+      correctAnswer,
+      explanation: `"${englishNumber}" is "${correctAnswer}" in Kannada.`
+    };
+  }
   generateQuestions(count: number): Question[] {
     const questions: Question[] = [];
-    const questionTypes = ['before', 'after', 'kannada-to-english', 'english-to-kannada'] as const;
+    const questionTypes = [
+      'before', 
+      'after', 
+      'kannada-to-english', 
+      'english-to-kannada',
+      'kannada-number-to-english',
+      'english-number-to-kannada'
+    ] as const;
     
     let attempts = 0;
     const maxAttempts = count * 3;
@@ -129,6 +210,12 @@ export class QuizGenerator {
           break;
         case 'english-to-kannada':
           question = this.generateEnglishToKannadaQuestion();
+          break;
+        case 'kannada-number-to-english':
+          question = this.generateKannadaNumberToEnglishQuestion();
+          break;
+        case 'english-number-to-kannada':
+          question = this.generateEnglishNumberToKannadaQuestion();
           break;
       }
 
