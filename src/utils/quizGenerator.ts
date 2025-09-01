@@ -182,21 +182,36 @@ export class QuizGenerator {
   }
   generateQuestions(count: number): Question[] {
     const questions: Question[] = [];
-    const questionTypes = [
-      'before', 
-      'after', 
-      'kannada-to-english', 
-      'english-to-kannada',
-      'kannada-number-to-english',
-      'english-number-to-kannada'
-    ] as const;
+    
+    // Ensure equal distribution of question types
+    const questionTypes = ['before', 'after', 'kannada-to-english', 'english-to-kannada', 'kannada-number-to-english', 'english-number-to-kannada'] as const;
+    const questionsPerType = Math.floor(count / questionTypes.length);
+    const remainder = count % questionTypes.length;
+    
+    // Create a balanced distribution
+    const typeDistribution: string[] = [];
+    questionTypes.forEach(type => {
+      for (let i = 0; i < questionsPerType; i++) {
+        typeDistribution.push(type);
+      }
+    });
+    
+    // Add remaining questions randomly
+    for (let i = 0; i < remainder; i++) {
+      const randomType = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+      typeDistribution.push(randomType);
+    }
+    
+    // Shuffle the distribution
+    const shuffledTypes = this.shuffleArray(typeDistribution);
     
     let attempts = 0;
     const maxAttempts = count * 3;
+    let typeIndex = 0;
 
-    while (questions.length < count && attempts < maxAttempts) {
+    while (questions.length < count && attempts < maxAttempts && typeIndex < shuffledTypes.length) {
       attempts++;
-      const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+      const type = shuffledTypes[typeIndex] as typeof questionTypes[number];
       
       let question: Question | null = null;
       
@@ -221,6 +236,7 @@ export class QuizGenerator {
 
       if (question) {
         questions.push(question);
+        typeIndex++;
       }
     }
 

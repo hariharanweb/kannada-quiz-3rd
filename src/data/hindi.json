@@ -1,0 +1,174 @@
+{
+    "gender": [
+        {
+            "male": "लड़का",
+            "female": "लड़की"
+        },
+        {
+            "male": "भाई",
+            "female": "बहन"
+        },
+        {
+            "male": "पिता",
+            "female": "माता"
+        },
+        {
+            "male": "राजा",
+            "female": "रानी"
+        },
+        {
+            "male": "बेटा",
+            "female": "बेटी"
+        }
+    ],
+    "meanings": {
+        "पढ़": "read",
+        "सो": "sleep",
+        "चल": "walk",
+        "खेल": "play",
+        "नाच": "dance",
+        "गा": "sing",
+        "लिख": "write",
+        "देख": "see",
+        "सुन": "listen",
+        "बोल": "speak",
+        "हंस": "laugh",
+        "रो": "cry",
+        "दौड़": "run",
+        "कूद": "jump",
+        "उड़": "fly"
+    },
+    "nounsAndVerbs": [
+        {
+            "sentence": "राम ने किताब पढ़ी",
+            "nouns": [
+                "राम",
+                "किताब"
+            ],
+            "verbs": [
+                "पढ़ी"
+            ],
+            "meaning": "Ram read a book"
+        },
+        {
+            "sentence": "मोहन बिस्तर पर सोया",
+            "nouns": [
+                "मोहन",
+                "बिस्तर"
+            ],
+            "verbs": [
+                "सोया"
+            ],
+            "meaning": "Mohan slept on the bed"
+        },
+        {
+            "sentence": "सीता सड़क पर चली",
+            "nouns": [
+                "सीता",
+                "सड़क"
+            ],
+            "verbs": [
+                "चली"
+            ],
+            "meaning": "Sita walked on the road"
+        },
+        {
+            "sentence": "बच्चे मैदान में खेले",
+            "nouns": [
+                "बच्चे",
+                "मैदान"
+            ],
+            "verbs": [
+                "खेले"
+            ],
+            "meaning": "Children played in the ground"
+        },
+        {
+            "sentence": "लड़की मंच पर नाची",
+            "nouns": [
+                "लड़की",
+                "मंच"
+            ],
+            "verbs": [
+                "नाची"
+            ],
+            "meaning": "The girl danced on the stage"
+        },
+        {
+            "sentence": "पापा अखबार पढ़ते हैं",
+            "nouns": [
+                "पापा",
+                "अखबार"
+            ],
+            "verbs": [
+                "पढ़ते"
+            ],
+            "meaning": "Father reads the newspaper"
+        },
+        {
+            "sentence": "कुत्ता पार्क में दौड़ा",
+            "nouns": [
+                "कुत्ता",
+                "पार्क"
+            ],
+            "verbs": [
+                "दौड़ा"
+            ],
+            "meaning": "The dog ran in the park"
+        },
+        {
+            "sentence": "माँ रसोई में खाना बनाती है",
+            "nouns": [
+                "माँ",
+                "रसोई",
+                "खाना"
+            ],
+            "verbs": [
+                "बनाती"
+            ],
+            "meaning": "Mother cooks food in the kitchen"
+        }
+    ],
+    "singularPlural": [
+        {
+            "singular": "लड़का",
+            "plural": "लड़के"
+        },
+        {
+            "singular": "लड़की",
+            "plural": "लड़कियाँ"
+        },
+        {
+            "singular": "किताब",
+            "plural": "किताबें"
+        },
+        {
+            "singular": "बच्चा",
+            "plural": "बच्चे"
+        },
+        {
+            "singular": "कुर्सी",
+            "plural": "कुर्सियाँ"
+        },
+        {
+            "singular": "सड़क",
+            "plural": "सड़कें"
+        },
+        {
+            "singular": "गाय",
+            "plural": "गायें"
+        },
+        {
+            "singular": "पेड़",
+            "plural": "पेड़"
+        },
+        {
+            "singular": "फूल",
+            "plural": "फूल"
+        },
+        {
+            "singular": "घर",
+            "plural": "घर"
+        }
+    ]
+}

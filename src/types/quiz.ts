@@ -7,13 +7,34 @@ export interface QuizData {
   gunitakshara: Record<string, string[]>;
 }
 
+export interface HindiData {
+  gender: Array<{ male: string; female: string }>;
+  meanings: Record<string, string>;
+  nounsAndVerbs: Array<{
+    sentence: string;
+    nouns: string[];
+    verbs: string[];
+    meaning: string;
+  }>;
+  singularPlural: Array<{
+    singular: string;
+    plural: string;
+  }>;
+}
+
 export interface Question {
   id: number;
-  type: 'before' | 'after' | 'kannada-to-english' | 'english-to-kannada' | 'kannada-number-to-english' | 'english-number-to-kannada';
+  type: 'before' | 'after' | 'kannada-to-english' | 'english-to-kannada' | 
+        'kannada-number-to-english' | 'english-number-to-kannada' |
+        'hindi-gender' | 'hindi-meaning-to-english' | 'english-to-hindi' |
+        'hindi-noun-verb' | 'hindi-singular-plural';
   question: string;
   options: string[];
-  correctAnswer: string;
+  correctAnswer: string | string[];
   explanation?: string;
+  sentence?: string;
+  sentenceMeaning?: string;
+  questionMode?: 'select-male' | 'select-female' | 'identify-gender' | 'select-nouns' | 'select-verbs' | 'identify-number';
 }
 
 export interface QuizState {
@@ -22,6 +43,8 @@ export interface QuizState {
   questions: Question[];
   showResult: boolean;
   showAnswer: boolean;
-  selectedAnswer: string | null;
+  selectedAnswer: string | string[] | null;
   isCorrect: boolean | null;
 }
+
+export type Subject = 'kannada' | 'hindi';
