@@ -47,3 +47,16 @@ Two separate quiz generators handle different languages:
 - **Styling**: Tailwind CSS with dark/light theme support
 - **Icons**: Lucide React
 - **Linting**: ESLint with TypeScript and React plugins
+
+## Deployment
+
+The application uses GitHub Actions for automated deployment to AWS S3:
+- **Workflow**: `.github/workflows/deploy.yml`
+- **Triggers**: Push to main branch or pull requests
+- **Process**: Install dependencies → Lint → Build → Deploy to S3
+
+### Required GitHub Secrets
+- `AWS_ACCESS_KEY_ID` - AWS access key
+- `AWS_SECRET_ACCESS_KEY` - AWS secret key  
+- `AWS_REGION` - AWS region (e.g., us-east-1)
+- `S3_BUCKET_NAME` - Target S3 bucket name
