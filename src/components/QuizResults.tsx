@@ -12,13 +12,13 @@ interface QuizResultsProps {
 }
 
 export const QuizResults: React.FC<QuizResultsProps> = ({
-  isDark= useTheme(),
   subject,
   score,
   totalQuestions,
   onRestart,
   onBackToSettings
 }) => {
+  const isDark= useTheme(),
   const percentage = Math.round((score / totalQuestions) * 100);
   
   const getGrade = () => {
