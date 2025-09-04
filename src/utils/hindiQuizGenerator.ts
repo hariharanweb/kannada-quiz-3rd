@@ -45,8 +45,8 @@ export class HindiQuizGenerator {
           explanation: `"${randomPair.female}" is female and "${randomPair.male}" is male.`,
           questionMode: mode
         };
-
       case 'identify-gender':
+        /*eslint no-case-declarations: "off"*/
         const word = Math.random() < 0.5 ? randomPair.male : randomPair.female;
         const gender = word === randomPair.male ? 'Male' : 'Female';
         return {

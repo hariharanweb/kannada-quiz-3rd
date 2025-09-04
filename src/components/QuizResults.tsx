@@ -18,7 +18,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
   onRestart,
   onBackToSettings
 }) => {
-  const isDark= useTheme(),
+  const isDark= useTheme();
   const percentage = Math.round((score / totalQuestions) * 100);
   
   const getGrade = () => {

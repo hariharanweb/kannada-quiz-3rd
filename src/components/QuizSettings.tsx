@@ -12,13 +12,13 @@ interface QuizSettingsProps {
 }
 
 export const QuizSettings: React.FC<QuizSettingsProps> = ({
-  isDark= useTheme(),
   subject,
   questionCount,
   onQuestionCountChange,
   onStartQuiz,
   onBackToSubjects
 }) => {
+  const isDark= useTheme();
   const getSubjectInfo = () => {
     if (subject === 'kannada') {
       return {

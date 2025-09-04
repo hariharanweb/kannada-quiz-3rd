@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTheme } from './contexts/ThemeContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { QuizHeader } from './components/QuizHeader';
