@@ -180,6 +180,28 @@ export class QuizGenerator {
       explanation: `"${englishNumber}" is "${correctAnswer}" in Kannada.`
     };
   }
+
+  private generateFlashCardQuestion(): Question | null {
+    const words = Object.entries(this.data.knownWords);
+    if (words.length === 0) return null;
+
+    const [kannadaWord, englishWord] = words[Math.floor(Math.random() * words.length)];
+    const flashCardType = Math.random() < 0.5 ? 'kannada-to-english' : 'english-to-kannada';
+    
+    const displayWord = flashCardType === 'kannada-to-english' ? kannadaWord : englishWord;
+    const correctAnswer = flashCardType === 'kannada-to-english' ? englishWord : kannadaWord;
+
+    return {
+      id: Date.now() + Math.random(),
+      type: 'flash-card',
+      question: `Look at the word and answer orally`,
+      options: ['Correct', 'Wrong'], // Teacher buttons
+      correctAnswer: correctAnswer,
+      flashCardWord: displayWord,
+      flashCardType: flashCardType,
+      explanation: `The word "${displayWord}" means "${correctAnswer}".`
+    };
+  }
   generateQuestions(count: number): Question[] {
     const questions: Question[] = [];
     
@@ -241,5 +263,36 @@ export class QuizGenerator {
     }
 
     return questions;
+  }
+
+  generateFlashCards(count: number = 10): Question[] {
+    const flashCards: Question[] = [];
+    const words = Object.entries(this.data.knownWords);
+    
+    if (words.length === 0) return flashCards;
+
+    // Generate specified number of flash cards
+    for (let i = 0; i < count && i < words.length; i++) {
+      const [kannadaWord, englishWord] = words[i];
+      const flashCardType = Math.random() < 0.5 ? 'kannada-to-english' : 'english-to-kannada';
+      
+      const displayWord = flashCardType === 'kannada-to-english' ? kannadaWord : englishWord;
+      const correctAnswer = flashCardType === 'kannada-to-english' ? englishWord : kannadaWord;
+
+      const flashCard: Question = {
+        id: Date.now() + Math.random() + i,
+        type: 'flash-card',
+        question: `Look at the word and answer orally`,
+        options: ['Correct', 'Wrong'], // Teacher buttons
+        correctAnswer: correctAnswer,
+        flashCardWord: displayWord,
+        flashCardType: flashCardType,
+        explanation: `The word "${displayWord}" means "${correctAnswer}".`
+      };
+
+      flashCards.push(flashCard);
+    }
+
+    return this.shuffleArray(flashCards);
   }
 }

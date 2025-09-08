@@ -28,25 +28,30 @@ export const QuizHeader: React.FC<QuizHeaderProps> = ({ subject, score, totalQue
   };
 
   return (
-    <div className="text-center mb-8">
-      <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br ${getGradient()} rounded-full mb-4`}>
-        <BookOpen className="w-8 h-8 text-white" />
+    <div className="mb-6">
+      <div className="flex items-center justify-center gap-3 mb-2">
+        <div className={`flex items-center justify-center w-10 h-10 bg-gradient-to-br ${getGradient()} rounded-full`}>
+          <BookOpen className="w-5 h-5 text-white" />
+        </div>
+        <h1 className={`text-3xl font-bold bg-gradient-to-r ${getTextGradient()} bg-clip-text text-transparent`}>
+          {getSubjectTitle()}
+        </h1>
       </div>
-      <h1 className={`text-4xl font-bold bg-gradient-to-r ${getTextGradient()} bg-clip-text text-transparent mb-2`}>
-        {getSubjectTitle()}
-      </h1>
-      <p className="text-gray-600 text-lg">
+      
+      <p className={`text-center text-base ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
         {subject === 'kannada' ? 'Learn Kannada the Fun Way!' : 
          subject === 'hindi' ? 'Learn Hindi the Fun Way!' : 
          'Learn Languages the Fun Way!'}
       </p>
       
       {score !== undefined && totalQuestions !== undefined && (
-        <div className={`mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full font-semibold ${
-          isDark ? 'bg-blue-900 text-blue-200' : 'bg-blue-100 text-blue-800'
-        }`}>
-          <Award className="w-4 h-4" />
-          Score: {score}/{totalQuestions}
+        <div className="flex justify-center mt-3">
+          <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full font-semibold text-sm ${
+            isDark ? 'bg-blue-900 text-blue-200' : 'bg-blue-100 text-blue-800'
+          }`}>
+            <Award className="w-4 h-4" />
+            Score: {score}/{totalQuestions}
+          </div>
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Question, Subject } from '../types/quiz';
 import { useTheme } from '../contexts/ThemeContext';
 import { CheckCircle, XCircle, ArrowRight, Info } from 'lucide-react';
+import { FlashCard } from './FlashCard';
 
 interface QuestionCardProps {
   subject: Subject;
@@ -11,7 +12,7 @@ interface QuestionCardProps {
   selectedAnswer: string | string[] | null;
   showAnswer: boolean;
   isCorrect: boolean | null;
-  onAnswerSelect: (answer: string | string[]) => void;
+  onAnswerSelect: (answer: string | string[], timeScore?: number) => void;
   onNextQuestion: () => void;
 }
 
@@ -141,6 +142,21 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     }
     return selectedAnswer !== null;
   };
+
+  // Handle flash card questions differently
+  if (question.type === 'flash-card') {
+    return (
+      <FlashCard
+        question={question}
+        currentQuestionIndex={currentQuestionIndex}
+        totalQuestions={totalQuestions}
+        onAnswerSelect={onAnswerSelect}
+        onNextQuestion={onNextQuestion}
+        showAnswer={showAnswer}
+        isCorrect={isCorrect}
+      />
+    );
+  }
 
   return (
     <div className={`max-w-2xl mx-auto rounded-2xl shadow-xl p-8 ${

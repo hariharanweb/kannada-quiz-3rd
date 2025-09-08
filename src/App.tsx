@@ -14,9 +14,10 @@ import hindiData from './data/hindi.json';
 
 function App() {
   const { isDark } = useTheme();
-  const [gameState, setGameState] = useState<'subject-selection' | 'settings' | 'quiz' | 'results'>('subject-selection');
+  const [gameState, setGameState] = useState<'subject-selection' | 'settings' | 'quiz' | 'flash-cards' | 'results'>('subject-selection');
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
   const [questionCount, setQuestionCount] = useState(20);
+  const [flashCardCount, setFlashCardCount] = useState(10);
   const [quizState, setQuizState] = useState<QuizState>({
     currentQuestion: 0,
     score: 0,
@@ -53,17 +54,41 @@ function App() {
     setGameState('quiz');
   };
 
-  const handleAnswerSelect = (answer: string | string[]) => {
+  const startFlashCards = () => {
+    if (selectedSubject !== 'kannada') return;
+    
+    const flashCards = kannadaQuizGenerator.generateFlashCards(flashCardCount);
+    
+    setQuizState({
+      currentQuestion: 0,
+      score: 0,
+      questions: flashCards,
+      showResult: false,
+      showAnswer: false,
+      selectedAnswer: null,
+      isCorrect: null
+    });
+    setGameState('flash-cards');
+  };
+
+  const handleAnswerSelect = (answer: string | string[], timeScore?: number) => {
     const currentQ = quizState.questions[quizState.currentQuestion];
     let isCorrect: boolean;
+    let scoreToAdd = 0;
 
-    if (Array.isArray(answer) && Array.isArray(currentQ.correctAnswer)) {
+    if (currentQ.type === 'flash-card') {
+      // Flash card scoring: isCorrect based on teacher input, score based on time
+      isCorrect = answer === 'Correct';
+      scoreToAdd = isCorrect ? (timeScore || 0) : 0;
+    } else if (Array.isArray(answer) && Array.isArray(currentQ.correctAnswer)) {
       // Multi-select answer (noun/verb questions)
       isCorrect = answer.length === currentQ.correctAnswer.length && 
                  answer.every(a => currentQ.correctAnswer.includes(a));
+      scoreToAdd = isCorrect ? 1 : 0;
     } else {
       // Single select answer
       isCorrect = answer === currentQ.correctAnswer;
+      scoreToAdd = isCorrect ? 1 : 0;
     }
     
     setQuizState(prev => ({
@@ -71,7 +96,7 @@ function App() {
       selectedAnswer: answer,
       showAnswer: true,
       isCorrect,
-      score: isCorrect ? prev.score + 1 : prev.score
+      score: prev.score + scoreToAdd
     }));
   };
 
@@ -142,13 +167,30 @@ function App() {
           <QuizSettings
             subject={selectedSubject}
             questionCount={questionCount}
+            flashCardCount={flashCardCount}
             onQuestionCountChange={setQuestionCount}
+            onFlashCardCountChange={setFlashCardCount}
             onStartQuiz={startQuiz}
+            onStartFlashCards={startFlashCards}
             onBackToSubjects={backToSubjects}
           />
         )}
         
         {gameState === 'quiz' && quizState.questions.length > 0 && selectedSubject && (
+          <QuestionCard
+            subject={selectedSubject}
+            question={quizState.questions[quizState.currentQuestion]}
+            currentQuestionIndex={quizState.currentQuestion}
+            totalQuestions={quizState.questions.length}
+            selectedAnswer={quizState.selectedAnswer}
+            showAnswer={quizState.showAnswer}
+            isCorrect={quizState.isCorrect}
+            onAnswerSelect={handleAnswerSelect}
+            onNextQuestion={handleNextQuestion}
+          />
+        )}
+
+        {gameState === 'flash-cards' && quizState.questions.length > 0 && selectedSubject && (
           <QuestionCard
             subject={selectedSubject}
             question={quizState.questions[quizState.currentQuestion]}
@@ -169,6 +211,7 @@ function App() {
             totalQuestions={quizState.questions.length}
             onRestart={restartQuiz}
             onBackToSettings={backToSettings}
+            isFlashCards={quizState.questions.length > 0 && quizState.questions[0].type === 'flash-card'}
           />
         )}
       </div>

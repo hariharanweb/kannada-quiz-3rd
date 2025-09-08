@@ -9,6 +9,7 @@ interface QuizResultsProps {
   totalQuestions: number;
   onRestart: () => void;
   onBackToSettings: () => void;
+  isFlashCards?: boolean;
 }
 
 export const QuizResults: React.FC<QuizResultsProps> = ({
@@ -16,10 +17,15 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
   score,
   totalQuestions,
   onRestart,
-  onBackToSettings
+  onBackToSettings,
+  isFlashCards = false
 }) => {
   const isDark= useTheme();
-  const percentage = Math.round((score / totalQuestions) * 100);
+  
+  // For flash cards, calculate percentage based on maximum possible score (10 * totalQuestions)
+  // For regular quiz, calculate percentage based on correct answers
+  const maxPossibleScore = isFlashCards ? totalQuestions * 10 : totalQuestions;
+  const percentage = Math.round((score / maxPossibleScore) * 100);
   
   const getGrade = () => {
     if (percentage >= 90) return { grade: 'A+', color: 'text-green-600', message: 'Outstanding!' };
@@ -72,7 +78,9 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
 
       {/* Results */}
       <div className="mb-8">
-        <h2 className={`text-3xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-800'}`}>Quiz Complete!</h2>
+        <h2 className={`text-3xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+          {isFlashCards ? 'Flash Cards Complete!' : 'Quiz Complete!'}
+        </h2>
         <p className={`text-xl font-semibold mb-4 ${color}`}>{message}</p>
         
         <div className={`rounded-xl p-6 mb-4 ${
@@ -81,14 +89,19 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
             : 'bg-gradient-to-r from-blue-50 to-purple-50'
         }`}>
           <div className={`text-4xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-800'}`}>
-            {score}/{totalQuestions}
+            {isFlashCards ? `${score}/${maxPossibleScore}` : `${score}/${totalQuestions}`}
           </div>
           <div className="text-lg text-gray-600 mb-2">
-            {percentage}% Correct
+            {isFlashCards ? `${score} points earned` : `${percentage}% Correct`}
           </div>
           <div className={`text-2xl font-bold ${color}`}>
             Grade: {grade}
           </div>
+          {isFlashCards && (
+            <div className="text-sm text-gray-500 mt-2">
+              {totalQuestions} flash cards • Max 10 points each
+            </div>
+          )}
         </div>
 
         {/* Encouragement Message */}

@@ -25,7 +25,7 @@ export interface HindiData {
 export interface Question {
   id: number;
   type: 'before' | 'after' | 'kannada-to-english' | 'english-to-kannada' | 
-        'kannada-number-to-english' | 'english-number-to-kannada' |
+        'kannada-number-to-english' | 'english-number-to-kannada' | 'flash-card' |
         'hindi-gender' | 'hindi-meaning-to-english' | 'english-to-hindi' |
         'hindi-noun-verb' | 'hindi-singular-plural';
   question: string;
@@ -35,6 +35,8 @@ export interface Question {
   sentence?: string;
   sentenceMeaning?: string;
   questionMode?: 'select-male' | 'select-female' | 'identify-gender' | 'select-nouns' | 'select-verbs' | 'identify-number';
+  flashCardWord?: string;
+  flashCardType?: 'kannada-to-english' | 'english-to-kannada';
 }
 
 export interface QuizState {
