@@ -31,7 +31,7 @@ export const QuizHeader: React.FC<QuizHeaderProps> = ({ subject, score, totalQue
     <div className="mb-6">
       <div className="flex items-center justify-center gap-3 mb-2">
         <div className={`flex items-center justify-center w-10 h-10 bg-gradient-to-br ${getGradient()} rounded-full`}>
-          <BookOpen className="w-5 h-5 text-white" />
+          <BookOpen className="w-4 h-4 text-white" />
         </div>
         <h1 className={`text-3xl font-bold bg-gradient-to-r ${getTextGradient()} bg-clip-text text-transparent`}>
           {getSubjectTitle()}

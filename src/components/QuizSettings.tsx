@@ -60,7 +60,7 @@ export const QuizSettings: React.FC<QuizSettingsProps> = ({
   const subjectInfo = getSubjectInfo();
 
   return (
-    <div className={`max-w-md mx-auto rounded-2xl shadow-xl p-8 ${
+    <div className={`max-w-4xl mx-auto rounded-2xl shadow-xl p-8 ${
       isDark ? 'bg-gray-800' : 'bg-white'
     }`}>
       {/* Back Button */}
@@ -82,7 +82,7 @@ export const QuizSettings: React.FC<QuizSettingsProps> = ({
         <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Configure your {subjectInfo.subtitle}</p>
       </div>
 
-      <div className="space-y-6">
+      <div className={`${subject === 'kannada' ? 'grid md:grid-cols-2 gap-6' : 'max-w-md mx-auto'}`}>
         {/* Regular Quiz Section */}
         <div className={`rounded-2xl p-6 border-2 ${
           isDark 
