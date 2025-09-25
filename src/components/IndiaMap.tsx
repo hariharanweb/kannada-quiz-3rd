@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import indiaSvg from '../maps/india/india.svg?raw';
 
 interface StateInfo {
   name: string;
@@ -27,15 +28,6 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
   showResult = false
 }) => {
   const { isDark } = useTheme();
-  const [svgContent, setSvgContent] = useState<string>('');
-
-  useEffect(() => {
-    // Load SVG content
-    fetch('/maps/india/india.svg')
-      .then(response => response.text())
-      .then(data => setSvgContent(data))
-      .catch(error => console.error('Error loading SVG:', error));
-  }, []);
 
   // Create a mapping from state codes to state names
   const codeToName = React.useMemo(() => {
@@ -70,9 +62,9 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
 
   // Process SVG content to add interactivity
   const processedSvgContent = React.useMemo(() => {
-    if (!svgContent) return '';
+    if (!indiaSvg) return '';
 
-    let processed = svgContent;
+    let processed = indiaSvg;
 
     // Add colors and click handlers to each state path
     Object.keys(codeToName).forEach(stateCode => {
@@ -91,7 +83,7 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
     });
 
     return processed;
-  }, [svgContent, codeToName, selectedState, correctState, showResult, states, unionTerritories]);
+  }, [codeToName, selectedState, correctState, showResult, states, unionTerritories]);
 
 
   // Handle SVG click events
