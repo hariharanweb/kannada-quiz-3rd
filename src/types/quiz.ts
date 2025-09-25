@@ -22,12 +22,28 @@ export interface HindiData {
   }>;
 }
 
+export interface GeographyData {
+  states: Array<{
+    name: string;
+    capital: string;
+    code: string;
+    region: string;
+    color: string;
+  }>;
+  unionTerritories: Array<{
+    name: string;
+    capital: string;
+    code: string;
+    color: string;
+  }>;
+}
+
 export interface Question {
   id: number;
-  type: 'before' | 'after' | 'kannada-to-english' | 'english-to-kannada' | 
+  type: 'before' | 'after' | 'kannada-to-english' | 'english-to-kannada' |
         'kannada-number-to-english' | 'english-number-to-kannada' | 'flash-card' |
         'hindi-gender' | 'hindi-meaning-to-english' | 'english-to-hindi' |
-        'hindi-noun-verb' | 'hindi-singular-plural';
+        'hindi-noun-verb' | 'hindi-singular-plural' | 'geography-state-capital';
   question: string;
   options: string[];
   correctAnswer: string | string[];
@@ -49,4 +65,4 @@ export interface QuizState {
   isCorrect: boolean | null;
 }
 
-export type Subject = 'kannada' | 'hindi';
+export type Subject = 'kannada' | 'hindi' | 'geography';

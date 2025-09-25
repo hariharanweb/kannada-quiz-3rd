@@ -8,9 +8,11 @@ import { QuestionCard } from './components/QuestionCard';
 import { QuizResults } from './components/QuizResults';
 import { QuizGenerator } from './utils/quizGenerator';
 import { HindiQuizGenerator } from './utils/hindiQuizGenerator';
-import { QuizState, QuizData, HindiData, Subject } from './types/quiz';
+import { GeographyQuizGenerator } from './utils/geographyQuizGenerator';
+import { QuizState, QuizData, HindiData, GeographyData, Subject } from './types/quiz';
 import kannadaData from './data/test.json';
 import hindiData from './data/hindi.json';
+import geographyData from './data/indiaMap.json';
 
 function App() {
   const { isDark } = useTheme();
@@ -30,6 +32,7 @@ function App() {
 
   const kannadaQuizGenerator = new QuizGenerator(kannadaData as QuizData);
   const hindiQuizGenerator = new HindiQuizGenerator(hindiData as HindiData);
+  const geographyQuizGenerator = new GeographyQuizGenerator(geographyData as GeographyData);
 
   const handleSubjectSelect = (subject: Subject) => {
     setSelectedSubject(subject);
@@ -38,8 +41,12 @@ function App() {
 
   const startQuiz = () => {
     if (!selectedSubject) return;
-    
-    const generator = selectedSubject === 'kannada' ? kannadaQuizGenerator : hindiQuizGenerator;
+
+    const generator = selectedSubject === 'kannada'
+      ? kannadaQuizGenerator
+      : selectedSubject === 'hindi'
+      ? hindiQuizGenerator
+      : geographyQuizGenerator;
     const questions = generator.generateQuestions(questionCount);
     
     setQuizState({

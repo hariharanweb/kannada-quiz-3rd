@@ -40,7 +40,7 @@ export const QuizSettings: React.FC<QuizSettingsProps> = ({
           '• English numbers to Kannada (1-50)'
         ]
       };
-    } else {
+    } else if (subject === 'hindi') {
       return {
         title: 'हिंदी Quiz',
         subtitle: 'Hindi Learning Quiz',
@@ -52,6 +52,20 @@ export const QuizSettings: React.FC<QuizSettingsProps> = ({
           '• English to Hindi translations',
           '• Identify nouns and verbs',
           '• Singular and plural forms'
+        ]
+      };
+    } else {
+      return {
+        title: 'Geography Quiz',
+        subtitle: 'Geography Learning Quiz',
+        gradient: 'from-blue-400 to-purple-500',
+        bgGradient: 'from-blue-50 to-purple-50',
+        questionTypes: [
+          '• Indian states and capitals',
+          '• Interactive map-based questions',
+          '• Union territories',
+          '• Click on the correct state/UT',
+          '• Visual geography learning'
         ]
       };
     }

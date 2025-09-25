@@ -14,17 +14,23 @@ export const QuizHeader: React.FC<QuizHeaderProps> = ({ subject, score, totalQue
 
   const getSubjectTitle = () => {
     if (!subject) return 'Language Quiz';
-    return subject === 'kannada' ? 'ಕನ್ನಡ Quiz' : 'हिंदी Quiz';
+    if (subject === 'kannada') return 'ಕನ್ನಡ Quiz';
+    if (subject === 'hindi') return 'हिंदी Quiz';
+    return 'Geography Quiz';
   };
 
   const getGradient = () => {
     if (!subject) return 'from-purple-400 to-pink-500';
-    return subject === 'kannada' ? 'from-orange-400 to-red-500' : 'from-green-400 to-blue-500';
+    if (subject === 'kannada') return 'from-orange-400 to-red-500';
+    if (subject === 'hindi') return 'from-green-400 to-blue-500';
+    return 'from-blue-400 to-purple-500';
   };
 
   const getTextGradient = () => {
     if (!subject) return 'from-purple-500 to-pink-600';
-    return subject === 'kannada' ? 'from-orange-500 to-red-600' : 'from-green-500 to-blue-600';
+    if (subject === 'kannada') return 'from-orange-500 to-red-600';
+    if (subject === 'hindi') return 'from-green-500 to-blue-600';
+    return 'from-blue-500 to-purple-600';
   };
 
   return (
@@ -39,8 +45,9 @@ export const QuizHeader: React.FC<QuizHeaderProps> = ({ subject, score, totalQue
       </div>
       
       <p className={`text-center text-base ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-        {subject === 'kannada' ? 'Learn Kannada the Fun Way!' : 
-         subject === 'hindi' ? 'Learn Hindi the Fun Way!' : 
+        {subject === 'kannada' ? 'Learn Kannada the Fun Way!' :
+         subject === 'hindi' ? 'Learn Hindi the Fun Way!' :
+         subject === 'geography' ? 'Learn Geography the Fun Way!' :
          'Learn Languages the Fun Way!'}
       </p>
       

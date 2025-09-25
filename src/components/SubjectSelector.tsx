@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Globe } from 'lucide-react';
+import { BookOpen, Globe, Map } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { Subject } from '../types/quiz';
 
@@ -22,7 +22,7 @@ export const SubjectSelector: React.FC<SubjectSelectorProps> = ({ onSubjectSelec
         <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Select a language to start learning!</p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-3 gap-6">
         {/* Kannada Subject */}
         <button
           onClick={() => onSubjectSelect('kannada')}
@@ -66,6 +66,28 @@ export const SubjectSelector: React.FC<SubjectSelectorProps> = ({ onSubjectSelec
               <p>• Word meanings</p>
               <p>• Nouns & Verbs</p>
               <p>• Singular & Plural</p>
+            </div>
+          </div>
+        </button>
+
+        {/* Geography Subject */}
+        <button
+          onClick={() => onSubjectSelect('geography')}
+          className={`group rounded-2xl p-8 border-2 transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
+            isDark
+              ? 'bg-gradient-to-br from-blue-900/20 to-purple-900/20 border-blue-700 hover:from-blue-800/30 hover:to-purple-800/30 hover:border-blue-600'
+              : 'bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200 hover:from-blue-100 hover:to-purple-100 hover:border-blue-300'
+          }`}
+        >
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full mb-4 group-hover:scale-110 transition-transform duration-300">
+              <Map className="w-8 h-8 text-white" />
+            </div>
+            <p className="text-lg font-semibold text-blue-600 mb-3">Geography</p>
+            <div className={`text-sm space-y-1 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p>• Indian States</p>
+              <p>• Capital Cities</p>
+              <p>• Interactive Maps</p>
             </div>
           </div>
         </button>
