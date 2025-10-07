@@ -183,6 +183,26 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ onComplete }) => {
 
     // Make text elements clickable and styled
     stateTexts.forEach((originalParts, fullStateName) => {
+      const normalizedFullName = fullStateName.toLowerCase().trim();
+      const isSelected = stateNameMap[normalizedFullName] === selectedState;
+      const isCorrect = showResult && stateNameMap[normalizedFullName] === currentQuestion.correctState;
+      const isWrong = showResult && stateNameMap[normalizedFullName] === selectedState && selectedState !== currentQuestion.correctState;
+
+      // Determine styling based on state
+      let textColor = isDark ? '#ffffff' : '#000000';
+      let fontWeight = 'normal';
+
+      if (isCorrect) {
+        textColor = '#22C55E'; // Green
+        fontWeight = 'bold';
+      } else if (isWrong) {
+        textColor = '#EF4444'; // Red
+        fontWeight = 'bold';
+      } else if (isSelected) {
+        textColor = isDark ? '#60A5FA' : '#3B82F6'; // Blue
+        fontWeight = 'bold';
+      }
+
       // For each part of the state name (with original spacing), make it clickable
       originalParts.forEach(originalPart => {
         // Escape special regex characters in the original text (including spaces)
@@ -199,13 +219,13 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ onComplete }) => {
           if (attrs.includes('class=')) {
             return match; // Already processed
           }
-          return `<tspan${attrs} class="state-text" data-state="${fullStateName}" style="cursor:${showResult ? 'default' : 'pointer'};user-select:none;fill:${isDark ? '#ffffff' : '#000000'}">${originalPart}</tspan>`;
+          return `<tspan${attrs} class="state-text" data-state="${fullStateName}" style="cursor:${showResult ? 'default' : 'pointer'};user-select:none;fill:${textColor};font-weight:${fontWeight}">${originalPart}</tspan>`;
         });
       });
     });
 
     return processed;
-  }, [currentQuestion, showResult, isDark]);
+  }, [currentQuestion, selectedState, showResult, isDark, stateNameMap]);
 
   // Handle clicks on SVG
   const handleSvgClick = (event: React.MouseEvent<HTMLDivElement>) => {
