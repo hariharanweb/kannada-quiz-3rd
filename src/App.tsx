@@ -6,13 +6,12 @@ import { SubjectSelector } from './components/SubjectSelector';
 import { QuizSettings } from './components/QuizSettings';
 import { QuestionCard } from './components/QuestionCard';
 import { QuizResults } from './components/QuizResults';
+import { IndiaMap } from './components/IndiaMap';
 import { QuizGenerator } from './utils/quizGenerator';
 import { HindiQuizGenerator } from './utils/hindiQuizGenerator';
-import { GeographyQuizGenerator } from './utils/geographyQuizGenerator';
-import { QuizState, QuizData, HindiData, GeographyData, Subject } from './types/quiz';
+import { QuizState, QuizData, HindiData, Subject } from './types/quiz';
 import kannadaData from './data/test.json';
 import hindiData from './data/hindi.json';
-import geographyData from './data/indiaMap.json';
 
 function App() {
   const { isDark } = useTheme();
@@ -32,11 +31,16 @@ function App() {
 
   const kannadaQuizGenerator = new QuizGenerator(kannadaData as QuizData);
   const hindiQuizGenerator = new HindiQuizGenerator(hindiData as HindiData);
-  const geographyQuizGenerator = new GeographyQuizGenerator(geographyData as GeographyData);
 
   const handleSubjectSelect = (subject: Subject) => {
     setSelectedSubject(subject);
-    setGameState('settings');
+
+    // Geography goes directly to quiz (no settings needed)
+    if (subject === 'geography') {
+      setGameState('quiz');
+    } else {
+      setGameState('settings');
+    }
   };
 
   const startQuiz = () => {
@@ -44,11 +48,9 @@ function App() {
 
     const generator = selectedSubject === 'kannada'
       ? kannadaQuizGenerator
-      : selectedSubject === 'hindi'
-      ? hindiQuizGenerator
-      : geographyQuizGenerator;
+      : hindiQuizGenerator;
     const questions = generator.generateQuestions(questionCount);
-    
+
     setQuizState({
       currentQuestion: 0,
       score: 0,
@@ -183,7 +185,20 @@ function App() {
           />
         )}
         
-        {gameState === 'quiz' && quizState.questions.length > 0 && selectedSubject && (
+        {gameState === 'quiz' && selectedSubject === 'geography' && (
+          <IndiaMap
+            onComplete={(score, total) => {
+              setQuizState(prev => ({
+                ...prev,
+                score,
+                questions: Array(total).fill({}),
+              }));
+              setGameState('results');
+            }}
+          />
+        )}
+
+        {gameState === 'quiz' && quizState.questions.length > 0 && selectedSubject && selectedSubject !== 'geography' && (
           <QuestionCard
             subject={selectedSubject}
             question={quizState.questions[quizState.currentQuestion]}

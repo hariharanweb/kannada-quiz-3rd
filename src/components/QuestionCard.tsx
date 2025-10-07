@@ -3,8 +3,6 @@ import { Question, Subject } from '../types/quiz';
 import { useTheme } from '../contexts/ThemeContext';
 import { CheckCircle, XCircle, ArrowRight, Info } from 'lucide-react';
 import { FlashCard } from './FlashCard';
-import { IndiaMap } from './IndiaMap';
-import geographyData from '../data/indiaMap.json';
 
 interface QuestionCardProps {
   subject: Subject;
@@ -157,101 +155,6 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         showAnswer={showAnswer}
         isCorrect={isCorrect}
       />
-    );
-  }
-
-  // Handle geography questions with map
-  if (question.type === 'geography-state-capital') {
-    const geographyMapData = geographyData as {
-      states: Array<{name: string; capital: string; code: string; region: string; color: string;}>,
-      unionTerritories: Array<{name: string; capital: string; code: string; color: string;}>
-    };
-
-    return (
-      <div className={`max-w-4xl mx-auto rounded-2xl shadow-xl p-8 ${
-        isDark ? 'bg-gray-800' : 'bg-white'
-      }`}>
-        {/* Progress Bar */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <span className={`text-sm font-semibold ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-              Question {currentQuestionIndex + 1} of {totalQuestions}
-            </span>
-            <span className="text-sm font-semibold text-blue-600">
-              {Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100)}%
-            </span>
-          </div>
-          <div className={`w-full rounded-full h-2 ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
-            <div
-              className="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${((currentQuestionIndex + 1) / totalQuestions) * 100}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Question */}
-        <div className="mb-8">
-          <h2 className={`text-2xl font-bold mb-4 text-center ${isDark ? 'text-white' : 'text-gray-800'}`}>
-            {question.question}
-          </h2>
-        </div>
-
-        {/* India Map */}
-        <div className="mb-6">
-          <IndiaMap
-            states={geographyMapData.states}
-            unionTerritories={geographyMapData.unionTerritories}
-            selectedState={selectedAnswer as string}
-            correctState={question.correctAnswer as string}
-            onStateClick={(stateName) => handleRegularAnswerSelect(stateName)}
-            showResult={showAnswer}
-          />
-        </div>
-
-        {/* Answer Explanation */}
-        {showAnswer && (
-          <div className="mb-6">
-            <div className={`p-4 rounded-xl border ${
-              isCorrect
-                ? isDark
-                  ? 'bg-green-900/20 border-green-700'
-                  : 'bg-green-50 border-green-200'
-                : isDark
-                  ? 'bg-red-900/20 border-red-700'
-                  : 'bg-red-50 border-red-200'
-            }`}>
-              <div className="flex items-center gap-2 mb-2">
-                {isCorrect ? (
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                ) : (
-                  <XCircle className="w-5 h-5 text-red-600" />
-                )}
-                <span className={`font-semibold ${
-                  isCorrect
-                    ? isDark ? 'text-green-300' : 'text-green-800'
-                    : isDark ? 'text-red-300' : 'text-red-800'
-                }`}>
-                  {isCorrect ? 'Correct!' : 'Incorrect!'}
-                </span>
-              </div>
-              {question.explanation && (
-                <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{question.explanation}</p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Next Button */}
-        {showAnswer && (
-          <button
-            onClick={onNextQuestion}
-            className="w-full bg-gradient-to-r from-blue-400 to-purple-500 hover:from-blue-500 hover:to-purple-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
-          >
-            {currentQuestionIndex + 1 === totalQuestions ? 'View Results' : 'Next Question'}
-            <ArrowRight className="w-5 h-5" />
-          </button>
-        )}
-      </div>
     );
   }
 
