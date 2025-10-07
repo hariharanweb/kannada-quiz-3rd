@@ -63,25 +63,6 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ onComplete }) => {
     return map;
   }, []);
 
-  const getStateColor = (stateName: string): string => {
-    if (!currentQuestion) return '#E5E7EB';
-
-    const normalizedStateName = stateName.toLowerCase().trim();
-    const mappedState = stateNameMap[normalizedStateName];
-
-    if (showResult) {
-      if (mappedState === currentQuestion.correctState) {
-        return '#22C55E'; // Green for correct answer
-      }
-      if (mappedState === selectedState) {
-        return '#EF4444'; // Red for incorrect selection
-      }
-    } else if (mappedState === selectedState) {
-      return '#3B82F6'; // Blue for current selection
-    }
-
-    return '#E5E7EB'; // Default gray
-  };
 
   const handleStateClick = (stateName: string) => {
     if (showResult || quizComplete) return;
@@ -185,14 +166,12 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ onComplete }) => {
     }
 
     // Color all path elements (states) and make them clickable
-    processed = processed.replace(/<path([^>\/]*)(\/?)>/g, (match, attrs, selfClose) => {
+    processed = processed.replace(/<path([^>/]*)(\/?)>/g, (match, attrs, selfClose) => {
       const idMatch = attrs.match(/id="([^"]+)"/);
       if (idMatch) {
-        const pathId = idMatch[1];
-
         // Apply colors to all paths (they represent state boundaries)
-        let color = '#E5E7EB';
-        let cursor = 'pointer';
+        const color = '#E5E7EB';
+        const cursor = 'pointer';
 
         // For now, we'll apply default styling
         // The actual state identification will happen through text overlay clicks
@@ -204,9 +183,6 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ onComplete }) => {
 
     // Make text elements clickable and styled
     stateTexts.forEach((originalParts, fullStateName) => {
-      const normalizedName = fullStateName.toLowerCase().trim();
-      const mappedState = stateNameMap[normalizedName];
-
       // For each part of the state name (with original spacing), make it clickable
       originalParts.forEach(originalPart => {
         // Escape special regex characters in the original text (including spaces)
@@ -229,11 +205,11 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ onComplete }) => {
     });
 
     return processed;
-  }, [indiaSvg, currentQuestion, selectedState, showResult, isDark, stateNameMap]);
+  }, [currentQuestion, showResult, isDark]);
 
   // Handle clicks on SVG
   const handleSvgClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    const target = event.target as any;
+    const target = event.target as SVGElement;
 
     // Check if clicked on a text element
     if (target.classList?.contains('state-text') || target.getAttribute('data-state')) {
