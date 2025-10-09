@@ -310,9 +310,9 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ onComplete }) => {
       </div>
 
       {/* SVG Map */}
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-4 w-full overflow-hidden">
         <div
-          className="w-full max-w-xl"
+          className="w-full max-w-xl [&>svg]:w-full [&>svg]:h-auto [&>svg]:max-w-full"
           onClick={handleSvgClick}
           dangerouslySetInnerHTML={{ __html: processedSvgContent }}
         />
