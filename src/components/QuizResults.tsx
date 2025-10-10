@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trophy, Star, RotateCcw, Home } from 'lucide-react';
-import { useTheme } from '../contexts/ThemeContext';
 import { Subject } from '../types/quiz';
+import { themeStyles } from '../styles/themeStyles';
 
 interface QuizResultsProps {
   subject: Subject;
@@ -20,7 +20,6 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
   onBackToSettings,
   isFlashCards = false
 }) => {
-  const isDark= useTheme();
   
   // For flash cards, calculate percentage based on maximum possible score (10 * totalQuestions)
   // For regular quiz, calculate percentage based on correct answers
@@ -54,9 +53,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
   };
 
   return (
-    <div className={`max-w-md mx-auto rounded-2xl shadow-xl p-8 text-center ${
-      isDark ? 'bg-gray-800' : 'bg-white'
-    }`}>
+    <div className={`max-w-md mx-auto rounded-2xl shadow-xl p-8 text-center ${themeStyles.bg.card}`}>
       {/* Trophy Icon */}
       <div className="mb-6">
         <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-4">
@@ -78,17 +75,13 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
 
       {/* Results */}
       <div className="mb-8">
-        <h2 className={`text-3xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+        <h2 className={`text-3xl font-bold mb-2 ${themeStyles.text.primary}`}>
           {isFlashCards ? 'Flash Cards Complete!' : 'Quiz Complete!'}
         </h2>
         <p className={`text-xl font-semibold mb-4 ${color}`}>{message}</p>
-        
-        <div className={`rounded-xl p-6 mb-4 ${
-          isDark 
-            ? 'bg-gradient-to-r from-blue-900/20 to-purple-900/20' 
-            : 'bg-gradient-to-r from-blue-50 to-purple-50'
-        }`}>
-          <div className={`text-4xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+
+        <div className={`rounded-xl p-6 mb-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20`}>
+          <div className={`text-4xl font-bold mb-2 ${themeStyles.text.primary}`}>
             {isFlashCards ? `${score}/${maxPossibleScore}` : `${score}/${totalQuestions}`}
           </div>
           <div className="text-lg text-gray-600 mb-2">
@@ -105,12 +98,8 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
         </div>
 
         {/* Encouragement Message */}
-        <div className={`rounded-xl p-4 ${
-          isDark 
-            ? 'bg-gradient-to-r from-green-900/20 to-blue-900/20' 
-            : 'bg-gradient-to-r from-green-50 to-blue-50'
-        }`}>
-          <p className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+        <div className="rounded-xl p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20">
+          <p className={`font-medium ${themeStyles.text.secondary}`}>
             {percentage >= 80 
               ? `Great job! You're mastering ${subject === 'kannada' ? 'Kannada' : 'Hindi'}!`
               : percentage >= 60
@@ -132,11 +121,7 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
         
         <button
           onClick={onBackToSettings}
-          className={`w-full font-bold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2 ${
-            isDark 
-              ? 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white'
-              : 'bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white'
-          }`}
+          className="w-full font-bold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2 bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 dark:from-gray-600 dark:to-gray-700 dark:hover:from-gray-500 dark:hover:to-gray-600 text-white"
         >
           <Home className="w-5 h-5" />
           Back to Settings

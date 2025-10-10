@@ -1,8 +1,8 @@
 import React from 'react';
 import { Question, Subject } from '../types/quiz';
-import { useTheme } from '../contexts/ThemeContext';
 import { CheckCircle, XCircle, ArrowRight, Info } from 'lucide-react';
 import { FlashCard } from './FlashCard';
+import { themeStyles, getOptionStateStyle, getWordStateStyle, getFeedbackTextColor } from '../styles/themeStyles';
 
 interface QuestionCardProps {
   subject: Subject;
@@ -27,7 +27,6 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   onAnswerSelect,
   onNextQuestion
 }) => {
-  const { isDark } = useTheme();
   const isMultiSelect = question.type === 'hindi-noun-verb';
   const [localSelectedAnswers, setLocalSelectedAnswers] = React.useState<string[]>([]);
   const [showTooltip, setShowTooltip] = React.useState(false);
@@ -59,65 +58,24 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 
   const getWordStyle = (word: string) => {
     if (!isMultiSelect) return '';
-    
-    const isSelected = showAnswer 
+
+    const isSelected = showAnswer
       ? Array.isArray(selectedAnswer) && selectedAnswer.includes(word)
       : localSelectedAnswers.includes(word);
     const correctAnswers = Array.isArray(question.correctAnswer) ? question.correctAnswer : [];
-    
-    if (!showAnswer) {
-      return isSelected 
-        ? isDark 
-          ? 'bg-blue-900 border-blue-600 text-blue-200 cursor-pointer'
-          : 'bg-blue-100 border-blue-300 text-blue-800 cursor-pointer'
-        : isDark
-          ? 'hover:bg-blue-900/50 cursor-pointer'
-          : 'hover:bg-blue-50 cursor-pointer';
-    }
+    const isCorrectAnswer = correctAnswers.includes(word);
 
-    if (correctAnswers.includes(word)) {
-      return isDark 
-        ? 'bg-green-900 border-green-600 text-green-200'
-        : 'bg-green-100 border-green-300 text-green-800';
-    }
-
-    if (isSelected && !correctAnswers.includes(word)) {
-      return isDark 
-        ? 'bg-red-900 border-red-600 text-red-200'
-        : 'bg-red-100 border-red-300 text-red-800';
-    }
-
-    return isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-50 text-gray-600';
+    return getWordStateStyle(isSelected, showAnswer, isCorrectAnswer);
   };
 
   const getOptionStyle = (option: string) => {
     if (isMultiSelect) return '';
-    
-    if (!showAnswer) {
-      return selectedAnswer === option
-        ? isDark 
-          ? 'bg-blue-900 border-blue-600 text-blue-200'
-          : 'bg-blue-100 border-blue-300 text-blue-800'
-        : isDark
-          ? 'bg-gray-700 border-gray-600 hover:border-blue-500 hover:bg-blue-900/30 text-gray-200'
-          : 'bg-white border-gray-200 hover:border-blue-300 hover:bg-blue-50';
-    }
 
-    if (option === question.correctAnswer) {
-      return isDark 
-        ? 'bg-green-900 border-green-600 text-green-200'
-        : 'bg-green-100 border-green-300 text-green-800';
-    }
+    const isSelected = selectedAnswer === option;
+    const isCorrectAnswer = option === question.correctAnswer;
+    const isAnswerCorrect = isCorrect ?? false;
 
-    if (selectedAnswer === option && option !== question.correctAnswer) {
-      return isDark 
-        ? 'bg-red-900 border-red-600 text-red-200'
-        : 'bg-red-100 border-red-300 text-red-800';
-    }
-
-    return isDark 
-      ? 'bg-gray-700 border-gray-600 text-gray-300'
-      : 'bg-gray-50 border-gray-200 text-gray-600';
+    return getOptionStateStyle(isSelected, showAnswer, isAnswerCorrect, isCorrectAnswer);
   };
 
   const getOptionIcon = (option: string) => {
@@ -159,22 +117,20 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   }
 
   return (
-    <div className={`max-w-2xl mx-auto rounded-2xl shadow-xl p-8 ${
-      isDark ? 'bg-gray-800' : 'bg-white'
-    }`}>
+    <div className={`max-w-2xl mx-auto rounded-2xl shadow-xl p-8 ${themeStyles.bg.card}`}>
       {/* Progress Bar */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-2">
-          <span className={`text-sm font-semibold ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+          <span className={`text-sm font-semibold ${themeStyles.text.secondary}`}>
             Question {currentQuestionIndex + 1} of {totalQuestions}
           </span>
           <span className="text-sm font-semibold text-blue-600">
             {Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100)}%
           </span>
         </div>
-        <div className={`w-full rounded-full h-2 ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`}>
+        <div className={`w-full rounded-full h-2 ${themeStyles.progress.bg}`}>
           <div
-            className="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full transition-all duration-300"
+            className={`h-2 rounded-full transition-all duration-300 ${themeStyles.progress.bar}`}
             style={{ width: `${((currentQuestionIndex + 1) / totalQuestions) * 100}%` }}
           />
         </div>
@@ -182,42 +138,32 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 
       {/* Question */}
       <div className="mb-8">
-        <h2 className={`text-2xl font-bold mb-4 text-center ${isDark ? 'text-white' : 'text-gray-800'}`}>
+        <h2 className={`text-2xl font-bold mb-4 text-center ${themeStyles.text.primary}`}>
           {question.question}
         </h2>
         
         {/* Sentence for noun/verb questions */}
         {question.sentence && (
-          <div className={`rounded-xl p-6 mb-6 ${
-            isDark 
-              ? 'bg-gradient-to-r from-yellow-900/20 to-orange-900/20' 
-              : 'bg-gradient-to-r from-yellow-50 to-orange-50'
-          }`}>
+          <div className={`rounded-xl p-6 mb-6 ${themeStyles.content.highlight}`}>
             <div className="text-center mb-2">
               <div className="flex items-center justify-center gap-2 mb-4">
-                <h3 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-gray-800'}`}>Sentence:</h3>
+                <h3 className={`text-xl font-semibold ${themeStyles.text.primary}`}>Sentence:</h3>
                 <div className="relative">
                   <button
                     onMouseEnter={() => setShowTooltip(true)}
                     onMouseLeave={() => setShowTooltip(false)}
-                    className={`p-1 rounded-full transition-colors duration-200 ${
-                      isDark 
-                        ? 'bg-blue-900 hover:bg-blue-800 text-blue-200'
-                        : 'bg-blue-100 hover:bg-blue-200 text-blue-600'
-                    }`}
+                    className={`p-1 rounded-full transition-colors duration-200 ${themeStyles.state.info}`}
                   >
                     <Info className="w-4 h-4" />
                   </button>
                   {showTooltip && (
-                    <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 text-sm rounded-lg whitespace-nowrap z-10 ${
-                      isDark ? 'bg-gray-200 text-gray-800' : 'bg-gray-800 text-white'
-                    }`}>
+                    <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 text-sm rounded-lg whitespace-nowrap z-10 ${themeStyles.tooltip.base}`}>
                       English: {question.sentenceMeaning}
                     </div>
                   )}
                 </div>
               </div>
-              <div className={`flex flex-wrap justify-center gap-2 text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+              <div className={`flex flex-wrap justify-center gap-2 text-2xl font-bold mb-2 ${themeStyles.text.primary}`}>
                 {question.sentence.split(' ').map((word, index) => (
                   <span
                     key={index}
@@ -238,9 +184,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                   className={`px-8 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg ${
                     isAnswerComplete()
                       ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700'
-                      : isDark
-                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : themeStyles.button.disabled
                   }`}
                 >
                   Submit Answer
@@ -274,13 +218,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
       {showAnswer && (
         <div className="mb-6">
           <div className={`p-4 rounded-xl border ${
-            isCorrect 
-              ? isDark 
-                ? 'bg-green-900/20 border-green-700'
-                : 'bg-green-50 border-green-200'
-              : isDark
-                ? 'bg-red-900/20 border-red-700'
-                : 'bg-red-50 border-red-200'
+            isCorrect ? themeStyles.feedback.correct : themeStyles.feedback.incorrect
           }`}>
             <div className="flex items-center gap-2 mb-2">
               {isCorrect ? (
@@ -288,16 +226,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               ) : (
                 <XCircle className="w-5 h-5 text-red-600" />
               )}
-              <span className={`font-semibold ${
-                isCorrect 
-                  ? isDark ? 'text-green-300' : 'text-green-800'
-                  : isDark ? 'text-red-300' : 'text-red-800'
-              }`}>
+              <span className={`font-semibold ${getFeedbackTextColor(isCorrect ?? false)}`}>
                 {isCorrect ? 'Correct!' : 'Incorrect!'}
               </span>
             </div>
             {question.explanation && (
-              <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{question.explanation}</p>
+              <p className={themeStyles.text.secondary}>{question.explanation}</p>
             )}
           </div>
         </div>

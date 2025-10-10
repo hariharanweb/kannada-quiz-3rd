@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useTheme } from './contexts/ThemeContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { QuizHeader } from './components/QuizHeader';
 import { SubjectSelector } from './components/SubjectSelector';
@@ -10,11 +9,11 @@ import { IndiaMap } from './components/IndiaMap';
 import { QuizGenerator } from './utils/quizGenerator';
 import { HindiQuizGenerator } from './utils/hindiQuizGenerator';
 import { QuizState, QuizData, HindiData, Subject } from './types/quiz';
+import { themeStyles } from './styles/themeStyles';
 import kannadaData from './data/test.json';
 import hindiData from './data/hindi.json';
 
 function App() {
-  const { isDark } = useTheme();
   const [gameState, setGameState] = useState<'subject-selection' | 'settings' | 'quiz' | 'flash-cards' | 'results'>('subject-selection');
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
   const [questionCount, setQuestionCount] = useState(20);
@@ -155,11 +154,7 @@ function App() {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      isDark 
-        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
-        : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'
-    }`}>
+    <div className={`min-h-screen transition-colors duration-300 ${themeStyles.bg.gradient}`}>
       <ThemeToggle />
       <div className="container mx-auto px-4 py-8">
         <QuizHeader 

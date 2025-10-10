@@ -1,7 +1,7 @@
 import React from 'react';
 import { BookOpen, Award } from 'lucide-react';
-import { useTheme } from '../contexts/ThemeContext';
 import { Subject } from '../types/quiz';
+import { themeStyles } from '../styles/themeStyles';
 
 interface QuizHeaderProps {
   subject?: Subject;
@@ -10,8 +10,6 @@ interface QuizHeaderProps {
 }
 
 export const QuizHeader: React.FC<QuizHeaderProps> = ({ subject, score, totalQuestions }) => {
-  const { isDark } = useTheme();
-
   const getSubjectTitle = () => {
     if (!subject) return 'Language Quiz';
     if (subject === 'kannada') return 'ಕನ್ನಡ Quiz';
@@ -44,18 +42,16 @@ export const QuizHeader: React.FC<QuizHeaderProps> = ({ subject, score, totalQue
         </h1>
       </div>
       
-      <p className={`text-center text-base ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+      <p className={`text-center text-base ${themeStyles.text.secondary}`}>
         {subject === 'kannada' ? 'Learn Kannada the Fun Way!' :
          subject === 'hindi' ? 'Learn Hindi the Fun Way!' :
          subject === 'geography' ? 'Learn Geography the Fun Way!' :
          'Learn Languages the Fun Way!'}
       </p>
-      
+
       {score !== undefined && totalQuestions !== undefined && (
         <div className="flex justify-center mt-3">
-          <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full font-semibold text-sm ${
-            isDark ? 'bg-blue-900 text-blue-200' : 'bg-blue-100 text-blue-800'
-          }`}>
+          <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full font-semibold text-sm ${themeStyles.state.selected}`}>
             <Award className="w-4 h-4" />
             Score: {score}/{totalQuestions}
           </div>
